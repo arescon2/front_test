@@ -9,7 +9,7 @@ import { Form, Field } from 'react-final-form'
 
 import { onTaskEdit, onTaskNewApi } from '../features/api';
 
-import { setAppTitle } from '../stores/mainSlice';
+import { setAppTitle, setIsSubmitting } from '../stores/mainSlice';
 import { toast } from 'react-toastify';
 
 const TaskOneForm = ({ getTasks }) => {
@@ -18,9 +18,8 @@ const TaskOneForm = ({ getTasks }) => {
   const { idTask } = useParams();
 
   const [ emailError, setEmailError ] = useState('');
-  const [ isSubmiting, setIsSubmitting ] = useState(false);
 
-  const { oneTask } = useSelector((state) => state.main);
+  const { oneTask, isSubmitting } = useSelector((state) => state.main);
 
   const isEdited = idTask ? idTask === 'new' ? false : true : false;
   
@@ -34,7 +33,7 @@ const TaskOneForm = ({ getTasks }) => {
   const onToUrl = (url) => navigate(url);
 
   const onSubmit = async ({ id, text, status, username, email }) => {
-    setIsSubmitting(true);
+    dispatch(setIsSubmitting(true));
     if(isEdited) {
       let isStatus = status === 0 ? 1 : status;
         isStatus = status === 10 ? 11 : isStatus;
@@ -57,7 +56,7 @@ const TaskOneForm = ({ getTasks }) => {
         }
       });
     }
-    setIsSubmitting(false);
+    dispatch(setIsSubmitting(false));
   };
 
   const onEmailChange = (event, input) => {
@@ -167,7 +166,7 @@ const TaskOneForm = ({ getTasks }) => {
                   </Field>
                 </Col>
                 <Col md={ 12 }>
-                  <Button disabled={ isSubmiting ? true : false } intent='primary' text={ isEdited ? 'Сохранить изменение' : 'Добавить задачу' } type='submit' />
+                  <Button disabled={ isSubmitting ? true : false } intent='primary' text={ isEdited ? 'Сохранить изменение' : 'Добавить задачу' } type='submit' />
                 </Col>
               </Row>
             </form>

@@ -8,7 +8,8 @@ const initialState = {
   sortDirection: '',
   authStatus: false,
   appTitle: '',
-  oneTask: {}
+  oneTask: {},
+  isSubmitting: false
 };
 
 export const mainSlice = createSlice({
@@ -48,12 +49,15 @@ export const mainSlice = createSlice({
     },
     setOneTask: (state, action) => {
       state.oneTask = action.payload;
+    },
+    setIsSubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
     }
   }
 });
 
 export const {
-  setOneTask,
+  setOneTask, setIsSubmitting,
   setListTasksAndTotalCount, changeSorting, setAuthStatus, setCurrentPage, setAppTitle
 } = mainSlice.actions;
 

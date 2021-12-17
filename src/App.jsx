@@ -25,7 +25,7 @@ const App = () => {
     getTasksApi(currentPage, sortField, sortDirection).then( result => {
       const payload = {
         list: result.message.tasks,
-        count: result.message.total_task_count,
+        count: parseInt(result.message.total_task_count),
       };
       dispatch(setListTasksAndTotalCount(payload));
     });
