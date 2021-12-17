@@ -11,28 +11,22 @@ import { toast } from "react-toastify";
 
 const headerFields = [
   {
-    title: 'id',
-    name: 'id',
-    width: '80px'
-  },
-  {
     title: 'Имя пользователя',
     name: 'username',
     width: '200px'
   },
   {
-    title: 'email',
-    name: 'email',
-    width: '200px'
+    title: 'Email',
+    name: 'email'
   },
   {
-    title: 'Сообщение',
-    name: 'text',
+    title: 'Текст задачи',
+    name: 'text'
   },
   {
     title: 'Статус',
     name: 'status',
-    width: '160px'
+    width: '200px'
   }
 ];
 
@@ -60,7 +54,7 @@ const ListTasks = ({ getTasks }) => {
     dispatch(setCurrentPage(page));
   };
 
-  const onConfirmTaskHandler = (task) => {
+  const onConfirmTaskHandler = async (task) => {
     let status = {
       0: 10,
       1: 11,
@@ -68,14 +62,14 @@ const ListTasks = ({ getTasks }) => {
       11: 11
     }[task.status];
 
-    onTaskEdit(task.id, false, status).then( ({status}) => {
+    await onTaskEdit(task.id, false, status).then( ({status}) => {
       if(status === 'ok') toast.success('Статус изменен');
       if(status === 'error') {
         toast.error('Ошибка валидации пользователя')
         navigate('/login');
       };
     });
-    getTasks();
+    await getTasks();
   };
 
   const onOpenTask = (task) => {
@@ -160,7 +154,7 @@ const ListTasks = ({ getTasks }) => {
       </tbody>
       <tfoot>
         <tr>
-          <td colSpan={3}></td>
+          <td colSpan={2}></td>
           <td>Всего задач:</td>
           <td>{totalCountTasks}</td>
         </tr>

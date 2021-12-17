@@ -49,10 +49,9 @@ const LoginForm = () => {
           
           username ? setLoginError(username) : null;
           password ? setPasswordError(password) : null;
-
         }
       }[status])();
-    })
+    });
   };
 
   const isFieldError = (field) => {
@@ -62,20 +61,13 @@ const LoginForm = () => {
     }[field];
   };
 
-  useEffect(() => {
-    let isFullError = loginError.length > 0 && passwordError.length > 0;
-    if(isFullError) toast.error(`${loginError} ${passwordError}`);
-    let isHalfError = loginError.length > 0 || passwordError.length > 0;
-    if(isHalfError) toast.error(`${passwordError}`);
-
-  },[loginError, passwordError])
-
   return <Card className='auth-block'>
     <FormGroup
       label="Логин"
       labelFor="login-input"
       className="login-form-item"
       intent={isFieldError('username')}
+      helperText={loginError ? loginError : ''}
     >
       <InputGroup
         id="login-input" placeholder="Логин"
@@ -88,6 +80,7 @@ const LoginForm = () => {
       labelFor="password-input"
       className="login-form-item"
       intent={isFieldError('password')}
+      helperText={passwordError ? passwordError : ''}
     >
       <InputGroup
         id="password-input" placeholder="Пароль" type="password"

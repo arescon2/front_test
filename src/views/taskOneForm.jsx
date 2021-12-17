@@ -32,13 +32,13 @@ const TaskOneForm = ({ getTasks }) => {
 
   const onToUrl = (url) => navigate(url);
 
-  const onSubmit = ({ id, text, status, username, email }) => {
+  const onSubmit = async ({ id, text, status, username, email }) => {
     setIsSubmitting(true);
     if(isEdited) {
       let isStatus = status === 0 ? 1 : status;
         isStatus = status === 10 ? 11 : isStatus;
 
-      onTaskEdit(id, text, isStatus).then( ({ status, message }) => {
+      await onTaskEdit(id, text, isStatus).then( ({ status, message }) => {
         if(status === 'error') navigate('/login');
         if(status === 'ok') {
           toast.success('Изменения сохранены');
@@ -47,7 +47,7 @@ const TaskOneForm = ({ getTasks }) => {
         };
       })
     } else {
-      onTaskNewApi(username, email, text).then( ({ status, message }) => {
+      await onTaskNewApi(username, email, text).then( ({ status, message }) => {
         if(status === 'error') setEmailError(message.email);
         if(status === 'ok') {
           toast.success('Задача создана');
@@ -55,7 +55,8 @@ const TaskOneForm = ({ getTasks }) => {
           navigate('/');
         };
       });
-    }
+    };
+    setIsSubmitting(false);
   };
 
   const onEmailChange = (event, input) => {

@@ -9,9 +9,11 @@ const api = axios.create({
   }
 });
 
+const DeveloperName = 'TumSay';
+
 export const getTasksApi = async (page = 1, sort_field, sort_direction) => {
   const params = {
-    developer: 'TSK',
+    developer: DeveloperName,
     page,
     sort_field,
     sort_direction
@@ -42,7 +44,7 @@ export const onLoginApi = async (username, password) => {
     url: '/login',
     data: formData,
     params: {
-      developer: 'TSK',
+      developer: DeveloperName,
     }
   });
   return response.data;
@@ -59,7 +61,7 @@ export const onTaskNewApi = async (username, email, text) => {
     url: '/create',
     data: formData,
     params: {
-      developer: 'TSK',
+      developer: DeveloperName,
     }
   });
   return response.data;
@@ -80,7 +82,7 @@ export const onTaskEdit = async (task_id, text, status) => {
     url: '/edit/' + task_id,
     data: formData,
     params: {
-      developer: 'TSK'
+      developer: DeveloperName
     }
   });
   return response.data;

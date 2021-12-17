@@ -21,7 +21,7 @@ const Header = () => {
 
   return <Navbar className="app-header bp3-dark">
     <Navbar.Group align={Alignment.LEFT}>
-      <Button outlined icon="plus" text="Задача" onClick={onToCreateTask}/>
+      <Button outlined icon="plus" text="Новая задача" onClick={onToCreateTask}/>
       <Navbar.Divider />
       <Navbar.Heading>{appTitle}</Navbar.Heading>
     </Navbar.Group>
@@ -29,7 +29,7 @@ const Header = () => {
       {
         auth_status ?
           <Button outlined intent='danger' icon="log-out" text="Выйти" onClick={onLogoutHandler}/> :
-            pathname !== '/login' && <Button outlined intent='primary' icon="log-in" text="Авторизация" onClick={onToLoginHandler}/>
+            pathname !== '/login' && <Button outlined icon="log-in" text="Авторизация" onClick={onToLoginHandler}/>
       }
     </Navbar.Group>
   </Navbar>
