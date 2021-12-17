@@ -1,13 +1,14 @@
-import { Button, ButtonGroup, Icon, Tag } from "@blueprintjs/core";
-import { useDispatch, useSelector } from "react-redux";
-import Pagination from "./pagination";
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Button, ButtonGroup, Icon, Tag } from '@blueprintjs/core';
+import Pagination from './pagination';
 
 import { setCurrentPage, setAppTitle, setOneTask, changeSorting } from '../stores/mainSlice';
-import { useEffect } from "react";
-import { onTaskEdit } from "../features/api";
+import { useEffect } from 'react';
+import { onTaskEdit } from '../features/api';
 
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const headerFields = [
   {
@@ -30,7 +31,7 @@ const headerFields = [
   }
 ];
 
-let statusArray = {
+const statusArray = {
   0: <Tag>задача не выполнена</Tag>,
   1: <Tag>задача не выполнена</Tag>,
   10: <Tag intent='success'>задача выполнена</Tag>,
@@ -41,33 +42,33 @@ const ListTasks = ({ getTasks }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    listTasks, totalCountTasks, currentPage, auth_status,
-    sort_field, sort_direction
+    listTasks, totalCountTasks, currentPage, authStatus,
+    sortField, sortDirection
   } = useSelector((state) => state.main);
 
-  if(auth_status) {
-    statusArray[1] = <><Tag>задача не выполнена</Tag><Tag intent='primary'>отредактирована админом</Tag></>;
-    statusArray[11] = <><Tag intent='success'>задача выполнена</Tag><Tag intent='primary'>отредактирована админом</Tag></>;
-  };
+  if(authStatus) {
+    statusArray[ 1 ] = <><Tag>задача не выполнена</Tag><Tag intent='primary'>отредактирована админом</Tag></>;
+    statusArray[ 11 ] = <><Tag intent='success'>задача выполнена</Tag><Tag intent='primary'>отредактирована админом</Tag></>;
+  }
 
   const onChangeCurrentPage = (page) => {
     dispatch(setCurrentPage(page));
   };
 
   const onConfirmTaskHandler = async (task) => {
-    let status = {
+    const localStatus = {
       0: 10,
       1: 11,
       10: 11,
       11: 11
-    }[task.status];
+    }[ task.status ];
 
-    await onTaskEdit(task.id, false, status).then( ({status}) => {
+    await onTaskEdit(task.id, false, localStatus).then( ({ status }) => {
       if(status === 'ok') toast.success('Статус изменен');
       if(status === 'error') {
         toast.error('Ошибка валидации пользователя')
         navigate('/login');
-      };
+      }
     });
     await getTasks();
   };
@@ -78,90 +79,94 @@ const ListTasks = ({ getTasks }) => {
   };
 
   const onSortingHandler = (column) => {
-    let sort_local_field = sort_field;
-    let sort_local_direction = sort_direction;
-    if(column === sort_local_field) sort_local_direction = sort_direction === 'asc' ? 'desc' : 'asc';
+    let sortLocalField = sortField;
+    let sortLocalDirection = sortDirection;
+    if(column === sortLocalField) sortLocalDirection = sortDirection === 'asc' ? 'desc' : 'asc';
       else {
-        sort_local_field = column;
-        sort_local_direction = 'asc';
+        sortLocalField = column;
+        sortLocalDirection = 'asc';
       }
     dispatch(changeSorting({
-      sort_field: sort_local_field,
-      sort_direction: sort_local_direction
+      sortField: sortLocalField,
+      sortDirection: sortLocalDirection
     }));
   };
 
   useEffect(() => { dispatch(setAppTitle('Список задач')) }, []);
 
   return <>
-    <table className="bp3-html-table bp3-html-table-bordered bp3-interactive table-lists">
-      <thead>
-        <tr>
-          {
-            headerFields.map( ({ title, name, width }, indexField) => {
-              let styles = width ? {
-                width: width
-              } : {};
-              let isSortingColumn = sort_field === name;
-              return <th onClick={() => onSortingHandler(name)} style={styles} key={indexField + 'field'}>
-                  {title}
-                  {isSortingColumn ? <Icon style={{ float: 'right' }} icon={ sort_direction === 'asc' ? 'sort-asc' : 'sort-desc'} /> : ''}
-                </th>
-            })
-          }
-          {
-            auth_status ? <th>
-              Действия
-            </th> : null
-          }
-        </tr>
-      </thead>
-      <tbody>
-        {
-          listTasks.map( (task, indexTask) => {
-            let isSuccesTask = task.status === 10 || task.status === 11;
-            return <tr key={indexTask + 'Task'}>
-              {
-                headerFields.map( ({ name, width }, indexField) => {
-                  let styles = width ? {
-                    width: width
-                  } : {};
-                  return <td style={styles} key={indexField + 'field'}>
-                    {
-                      name === 'status' ?
-                        statusArray[task[name]] :
-                          task[name]
-                    }
-                  </td>
-                })
-              }
-              {
-                auth_status ? <td>
-                  <ButtonGroup>
-                    <Button intent='primary' outlined small icon='edit' onClick={() => onOpenTask(task)} placeholder='Редактирование' />
-                    {
-                      !isSuccesTask ? <Button
-                        intent='success'outlined small icon='confirm' placeholder='Выполнено'
-                        onClick={() => onConfirmTaskHandler(task)}
-                      /> : null
-                    }
-                  </ButtonGroup>
-                </td> : null
-              }
-            </tr>
-          })
-        }
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colSpan={2}></td>
-          <td>Всего задач:</td>
-          <td>{totalCountTasks}</td>
-        </tr>
-      </tfoot>
-    </table>
-    <Pagination current={currentPage} totalCount={totalCountTasks} onChangeCurrentPage={onChangeCurrentPage} />
+		<table className='bp3-html-table bp3-html-table-bordered bp3-interactive table-lists'>
+			<thead>
+				<tr>
+					{
+						headerFields.map( ({ title, name, width }) => {
+							const styles = width ? {
+								width: width
+							} : {};
+							const isSortingColumn = sortField === name;
+							return <th onClick={ () => onSortingHandler(name) } style={ styles } key={ name + 'field' }>
+								{title}
+								{isSortingColumn ? <Icon style={ { float: 'right' } } icon={ sortDirection === 'asc' ? 'sort-asc' : 'sort-desc' } /> : ''}
+							</th>
+						})
+					}
+					{
+						authStatus ? <th>
+								Действия
+						</th> : null
+					}
+				</tr>
+			</thead>
+			<tbody>
+				{
+					listTasks.map( (task) => {
+						const isSuccesTask = task.status === 10 || task.status === 11;
+						return <tr key={ task.id + 'Task' }>
+							{
+								headerFields.map( ({ name, width }) => {
+									const styles = width ? {
+										width: width
+									} : {};
+									return <td style={ styles } key={ task.id + name + 'field' }>
+										{
+											name === 'status' ?
+												statusArray[ task[ name ] ] :
+													task[ name ]
+										}
+									</td>
+								})
+							}
+								{
+								authStatus ? <td>
+										<ButtonGroup>
+												<Button intent='primary' outlined small icon='edit' onClick={ () => onOpenTask(task) } placeholder='Редактирование' />
+												{
+											!isSuccesTask ? <Button
+												intent='success'outlined small icon='confirm' placeholder='Выполнено'
+												onClick={ () => onConfirmTaskHandler(task) }
+											/> : null
+										}
+										</ButtonGroup>
+								</td> : null
+							}
+						</tr>
+					})
+				}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colSpan={ 2 }></td>
+					<td>Всего задач:</td>
+					<td>{totalCountTasks}</td>
+				</tr>
+			</tfoot>
+		</table>
+		<Pagination current={ currentPage } totalCount={ totalCountTasks } onChangeCurrentPage={ onChangeCurrentPage } />
   </>
 };
+
+ListTasks.propTypes = {
+  getTasks: PropTypes.func
+}
 
 export default ListTasks;

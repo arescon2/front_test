@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { auth_status, appTitle } = useSelector((state) => state.main);
+  const { authStatus, appTitle } = useSelector((state) => state.main);
 
   const onLogoutHandler = () => {
     Cookies.remove('auth-token');
@@ -19,17 +19,17 @@ const Header = () => {
   const onToLoginHandler = () => navigate('/login');
   const onToCreateTask = () => navigate('/task/new');
 
-  return <Navbar className="app-header bp3-dark">
-    <Navbar.Group align={Alignment.LEFT}>
-      <Button outlined icon="plus" text="Новая задача" onClick={onToCreateTask}/>
+  return <Navbar className='app-header bp3-dark'>
+    <Navbar.Group align={ Alignment.LEFT }>
+      <Button outlined icon='plus' text='Новая задача' onClick={ onToCreateTask }/>
       <Navbar.Divider />
       <Navbar.Heading>{appTitle}</Navbar.Heading>
     </Navbar.Group>
-    <Navbar.Group align={Alignment.RIGHT}>
+    <Navbar.Group align={ Alignment.RIGHT }>
       {
-        auth_status ?
-          <Button outlined intent='danger' icon="log-out" text="Выйти" onClick={onLogoutHandler}/> :
-            pathname !== '/login' && <Button outlined icon="log-in" text="Авторизация" onClick={onToLoginHandler}/>
+        authStatus ?
+          <Button outlined intent='danger' icon='log-out' text='Выйти' onClick={ onLogoutHandler }/> :
+            pathname !== '/login' && <Button outlined icon='log-in' text='Авторизация' onClick={ onToLoginHandler }/>
       }
     </Navbar.Group>
   </Navbar>

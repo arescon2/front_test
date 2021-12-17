@@ -11,20 +11,20 @@ const api = axios.create({
 
 const DeveloperName = 'TumSay';
 
-export const getTasksApi = async (page = 1, sort_field, sort_direction) => {
+export const getTasksApi = async (page = 1, sortField, sortDirection) => {
   const params = {
     developer: DeveloperName,
     page,
-    sort_field,
-    sort_direction
+    sortField,
+    sortDirection
   };
 
-  const isSorted = sort_field && sort_field.length > 0;
+  const isSorted = sortField && sortField.length > 0;
   
   if(isSorted) {
-    params.sort_field = sort_field;
-    params.sort_direction = sort_direction;
-  };
+    params.sortField = sortField;
+    params.sortDirection = sortDirection;
+  }
 
   const response = await api({
     method: 'GET',
@@ -35,7 +35,7 @@ export const getTasksApi = async (page = 1, sort_field, sort_direction) => {
 };
 
 export const onLoginApi = async (username, password) => {
-  let formData = new FormData();
+  const formData = new FormData();
   formData.append('username', username);
   formData.append('password', password);
 
@@ -51,7 +51,7 @@ export const onLoginApi = async (username, password) => {
 };
 
 export const onTaskNewApi = async (username, email, text) => {
-  let formData = new FormData();
+  const formData = new FormData();
   formData.append('username', username);
   formData.append('email', email);
   formData.append('text', text);
@@ -68,8 +68,8 @@ export const onTaskNewApi = async (username, email, text) => {
 
 };
 
-export const onTaskEdit = async (task_id, text, status) => {
-  let formData = new FormData();
+export const onTaskEdit = async (taskId, text, status) => {
+  const formData = new FormData();
   status && formData.append('status', status);
   text && formData.append('text', text);
 
@@ -79,7 +79,7 @@ export const onTaskEdit = async (task_id, text, status) => {
 
   const response = await api({
     method: 'POST',
-    url: '/edit/' + task_id,
+    url: '/edit/' + taskId,
     data: formData,
     params: {
       developer: DeveloperName

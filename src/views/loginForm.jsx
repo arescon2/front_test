@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
 import { Button, Card, FormGroup, InputGroup } from '@blueprintjs/core';
 
 import { onLoginApi } from '../features/api';
@@ -11,10 +10,10 @@ import { setAuthStatus } from '../stores/mainSlice';
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [ login, setLogin ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ loginError, setLoginError ] = useState('');
+  const [ passwordError, setPasswordError ] = useState('');
 
   const setCookieAndRedirect = (name, value, params) => {
     Cookies.set(name, value, params);
@@ -33,7 +32,7 @@ const LoginForm = () => {
         setPassword(value);
         setPasswordError('')
       }
-    }[id])();
+    }[ id ])();
   };
 
   const onLoginHandler = () => {
@@ -42,15 +41,13 @@ const LoginForm = () => {
       ({
         'ok': () => {
           const { token } = message;
-          setCookieAndRedirect('auth-token', token, { expires: new Date(Date.now() + 24 * 60 * 60 * 1000)});
+          setCookieAndRedirect('auth-token', token, { expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
         },
-        'error': () => {
-          const {username, password} = message;
-          
-          username ? setLoginError(username) : null;
-          password ? setPasswordError(password) : null;
+        'error': () => {          
+          message.username ? setLoginError(message.username) : null;
+          message.password ? setPasswordError(message.password) : null;
         }
-      }[status])();
+      }[ status ])();
     });
   };
 
@@ -58,38 +55,38 @@ const LoginForm = () => {
     return {
       username: loginError.length > 0 ? 'danger' : 'none',
       password: passwordError.length > 0 ? 'danger' : 'none',
-    }[field];
+    }[ field ];
   };
 
   return <Card className='auth-block'>
     <FormGroup
-      label="Логин"
-      labelFor="login-input"
-      className="login-form-item"
-      intent={isFieldError('username')}
-      helperText={loginError ? loginError : ''}
+      label='Логин'
+      labelFor='login-input'
+      className='login-form-item'
+      intent={ isFieldError('username') }
+      helperText={ loginError ? loginError : '' }
     >
       <InputGroup
-        id="login-input" placeholder="Логин"
-        value={login} onChange={onChangeHandler}
-        intent={isFieldError('username')}
+        id='login-input' placeholder='Логин'
+        value={ login } onChange={ onChangeHandler }
+        intent={ isFieldError('username') }
       />
     </FormGroup>
     <FormGroup
-      label="Пароль"
-      labelFor="password-input"
-      className="login-form-item"
-      intent={isFieldError('password')}
-      helperText={passwordError ? passwordError : ''}
+      label='Пароль'
+      labelFor='password-input'
+      className='login-form-item'
+      intent={ isFieldError('password') }
+      helperText={ passwordError ? passwordError : '' }
     >
       <InputGroup
-        id="password-input" placeholder="Пароль" type="password"
-        value={password} onChange={onChangeHandler}
-        intent={isFieldError('password')}
+        id='password-input' placeholder='Пароль' type='password'
+        value={ password } onChange={ onChangeHandler }
+        intent={ isFieldError('password') }
       />
     </FormGroup>
-    <Button text="Войти" intent='primary' onClick={onLoginHandler} />
-    </Card>
+    <Button text='Войти' intent='primary' onClick={ onLoginHandler } />
+  </Card>
 };
 
 export default LoginForm;

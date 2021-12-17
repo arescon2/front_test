@@ -15,7 +15,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={ store }>
       <BrowserRouter>
         <CookiesProvider>
           <App />

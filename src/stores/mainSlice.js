@@ -4,9 +4,9 @@ const initialState = {
   listTasks: [],
   totalCountTasks: 0,
   currentPage: 1,
-  sort_field: '',
-  sort_direction: '',
-  auth_status: false,
+  sortField: '',
+  sortDirection: '',
+  authStatus: false,
   appTitle: '',
   oneTask: {}
 };
@@ -18,23 +18,27 @@ export const mainSlice = createSlice({
     setListTasksAndTotalCount: (state, action) => {
       const { list, count } = action.payload;
 
-      return state = {
+      const newState = {
         ...state,
-        listTasks: [...list],
+        listTasks: [ ...list ],
         totalCountTasks: count
       };
+
+      return newState;
     },
     changeSorting: (state, action) => {
-      const { sort_field, sort_direction = 'asc' } = action.payload;
+      const { sortField, sortDirection = 'asc' } = action.payload;
       
-      return state = {
+      const newState = {
         ...state,
-        sort_field: sort_field,
-        sort_direction: sort_direction
+        sortField: sortField,
+        sortDirection: sortDirection
       };
+
+      return newState;
     },
     setAuthStatus: (state, action) => {
-      state.auth_status = action.payload;
+      state.authStatus = action.payload;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;

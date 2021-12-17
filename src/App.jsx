@@ -19,10 +19,10 @@ const App = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { currentPage, sort_field, sort_direction } = useSelector((state) => state.main);
+  const { currentPage, sortField, sortDirection } = useSelector((state) => state.main);
 
   const getTasks = () => {
-    getTasksApi(currentPage, sort_field, sort_direction).then( result => {
+    getTasksApi(currentPage, sortField, sortDirection).then( result => {
       const payload = {
         list: result.message.tasks,
         count: result.message.total_task_count,
@@ -32,14 +32,14 @@ const App = () => {
   };
 
   useEffect(() => {
-    let token = Cookies.get('auth-token');
+    const token = Cookies.get('auth-token');
     pathname === '/login' && navigate('/');
     token && dispatch(setAuthStatus(true));
   }, []);
 
   useEffect(() => {
     getTasks();
-  }, [currentPage, sort_field, sort_direction]);
+  }, [ currentPage, sortField, sortDirection ]);
 
   return <>
     <Header />
@@ -47,16 +47,16 @@ const App = () => {
       <Row>
         <Col>
           <Routes>
-            <Route path="/" element={<ListTasks getTasks={getTasks} />} />
-            <Route path="/task/:id_task" element={<TaskOneForm getTasks={getTasks} />} />
-            <Route path="login" element={<LoginForm />}/>
+            <Route path='/' element={ <ListTasks getTasks={ getTasks } /> } />
+            <Route path='/task/:idTask' element={ <TaskOneForm getTasks={ getTasks } /> } />
+            <Route path='login' element={ <LoginForm /> }/>
           </Routes>
         </Col>
       </Row>
     </Container>
     <ToastContainer
-      position="top-right"
-      autoClose={5000}
+      position='top-right'
+      autoClose={ 5000 }
       pauseOnHover
       theme='colored'
     />
