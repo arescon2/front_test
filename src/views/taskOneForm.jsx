@@ -21,7 +21,7 @@ const TaskOneForm = ({ getTasks }) => {
 
   const { oneTask } = useSelector((state) => state.main);
 
-  const isEdited = id_task ? true : false;
+  const isEdited = id_task ? id_task === 'new' ? false : true : false;
   
   let TITLE = id_task === 'new' ? 'Новая задача' : 'Редактирование задачи';
 
