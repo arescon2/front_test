@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 
 import './styles.scss';
-
+import '@blueprintjs/icons/lib/css/blueprint-icons.css'
+import '@blueprintjs/core/lib/css/blueprint.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 import { store } from './stores';
