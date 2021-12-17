@@ -32,7 +32,7 @@ const TaskOneForm = ({ getTasks }) => {
 
   const onToUrl = (url) => navigate(url);
 
-  const onSubmit = ({ id, text, status }) => {
+  const onSubmit = ({ id, text, status, username, email }) => {
     setIsSubmitting(true);
     if(isEdited) {
       let isStatus = status === 0 ? 1 : status;
